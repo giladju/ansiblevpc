@@ -1,0 +1,73 @@
+---
+envname: poc
+region: eu-west-1
+availability_zone: eu-west-1a
+cidr_block: 172.16.0.0/16
+subnets:
+    public: 172.16.100.0/24
+    private: 172.16.200.0/24
+instances:
+    - role: ops
+      subnet: public
+      type: t2.large
+      public_ip: True
+      volumes:
+          - device_name: /dev/sda1
+            volume_size: 32
+      groups: [allow_vpc, allow_ssh]
+    - role: portal
+      subnet: private
+      type: t2.micro
+      count: 1
+      volumes:
+          - device_name: /dev/sda1
+            volume_size: 8
+      groups: [allow_vpc, allow_ssh]
+      loadbalancer: True
+    - role: appserver
+      subnet: private
+      type: t2.micro
+      count: 1
+      volumes:
+          - device_name: /dev/sda1
+            volume_size: 8
+    - role: elk
+      subnet: private
+      type: t2.micro
+      count: 1
+      volumes:
+          - device_name: /dev/sda1
+            volume_size: 8
+#    - role: dbserver
+#      subnet: private
+#      type: t2.micro
+#      ebs_optimized: True
+#      count: 1
+#      volumes:
+#          - device_name: /dev/sdb
+#            volume_type: io1
+#            iops: 3000
+#            volume_size: 10
+#            delete_on_termination: True
+#      user_data: |
+#          #!/bin/sh
+#          parted /dev/xvdb --script mklabel msdos mkpart primary ext4 0% 100%
+#          mkfs.ext4 /dev/xvdb1
+#          mkdir /store
+#          echo '/dev/xvdb1 /store ext4 defaults,discard,nobootwait 0 0' >> /etc/fstab
+#          mount -a
+#    - role: backup
+#      subnet: private
+#      type: t2.micro
+#      ebs_optimized: True
+#      count: 1
+#      volumes:
+#          - device_name: /dev/sdb
+#            volume_size: 10
+#      user_data: |
+#          #!/bin/sh
+#          parted /dev/xvdb --script mklabel msdos mkpart primary ext4 0% 100%
+#          mkfs.ext4 /dev/xvdb1
+#          mkdir -p /mnt/backupvolume
+#          echo '/dev/xvdb1 /mnt/backupvolume ext4 defaults,discard,nobootwait 0 0' >> /etc/fstab
+#          mount -a
