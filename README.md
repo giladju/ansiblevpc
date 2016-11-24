@@ -25,3 +25,28 @@ Make sure have set up your user witn AWS CLI key and secret correctly
 cd ansiblevpc
 ansible-playbook vpc-absent.yml -i inventories/poc --vault-password-file=/home/user/.ansible-vault-pw.txt
 ```
+
+## Open issues
+
+The following playbooks are not working/tested
+
+* lb
+* ops
+* abscent
+
+## Manual Clean up 
+
+### EC2
+
+* Enable termination of NAT server
+* Terminate all servers
+* Load Balancers - delete poc-portal
+* Delete `available` volumes
+
+### VPC
+
+* Internet Gateway - detach from vpc
+* Internet Gateway - delete
+* Subnets - delete subnets `poc_*`
+* Route tables - delete route teables `poc*`
+* VPC - delete VPC `poc`
