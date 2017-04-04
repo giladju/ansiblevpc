@@ -25,8 +25,8 @@ Make sure have set up your user witn AWS CLI key and secret correctly
 cd ansiblevpc
 ansible-playbook vpc-absent.yml -i inventories/poc --vault-password-file=/home/user/.ansible-vault-pw.txt
 
-**Note:** vault password is `V@ult1ng`
 ```
+**Note:** vault password is `V@ult1ng`
 
 ## Open issues
 
